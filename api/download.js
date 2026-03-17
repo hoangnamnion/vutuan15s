@@ -59,10 +59,10 @@ export default function handler(req, res) {
     </dict>
   </array>
   <key>PayloadDescription</key>
-  <string>Mô tả:
-• Locket Gold Hyper Tech
-• TNOAA-Đình Mạnh
-• Locket Gold 15s</string>
+  <string>
+✔️ Locket Gold 15s
+_ Vũ Tuân _
+</string>
   <key>PayloadDisplayName</key>
   <string>Locket User 15s - ${decoded.name}</string>
   <key>PayloadIdentifier</key>
