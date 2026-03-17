@@ -60,8 +60,8 @@ export default function handler(req, res) {
   </array>
   <key>PayloadDescription</key>
   <string>
-✔️ Locket Gold 15s
-_ Vũ Tuân _
+Locket Gold - Vũ Tuân 
+✔️ Hỗ Trợ Locket Gold Quay Video 15s
 </string>
   <key>PayloadDisplayName</key>
   <string>Locket User 15s - ${decoded.name}</string>
