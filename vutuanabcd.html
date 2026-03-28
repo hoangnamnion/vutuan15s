@@ -45,26 +45,27 @@
       transition: transform 0.3s ease;
     }
 
-    h2 { 
-      margin-top: 0; 
-      font-size: 22px; 
+    h2 {
+      margin-top: 0;
+      font-size: 22px;
       font-weight: 700;
       text-align: center;
       margin-bottom: 20px;
     }
 
     input {
-      width: 100%; 
-      padding: 14px 16px; 
-      font-size: 16px; 
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 16px;
       border: 1px solid #e1e5eb;
-      border-radius: 12px; 
-      box-sizing: border-box; 
+      border-radius: 12px;
+      box-sizing: border-box;
       margin-bottom: 20px;
       transition: all 0.3s ease;
       background-color: #f8f9fa;
       color: #333;
     }
+
     input:focus {
       outline: none;
       border-color: var(--primary);
@@ -72,21 +73,30 @@
       box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
     }
 
+    .input-help {
+      margin-top: -12px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
     button {
-      padding: 14px 20px; 
-      font-size: 16px; 
-      font-weight: 600; 
+      padding: 14px 20px;
+      font-size: 16px;
+      font-weight: 600;
       color: #fff;
-      border: none; 
-      border-radius: 12px; 
+      border: none;
+      border-radius: 12px;
       cursor: pointer;
-      transition: all 0.2s ease; 
+      transition: all 0.2s ease;
       width: 100%;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
+
     button:active { transform: scale(0.98); }
     button:disabled { opacity: 0.7; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
-    
+
     .btn-primary { background: linear-gradient(135deg, var(--primary), #3f37c9); }
     .btn-primary:hover:not(:disabled) { box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4); transform: translateY(-2px); }
 
@@ -97,29 +107,52 @@
     .btn-danger:hover { box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4); transform: translateY(-2px); }
 
     #result { margin-top: 25px; border-top: 1px dashed #dcdde1; padding-top: 25px; }
-    
-    .countdown { 
-      color: var(--danger); font-weight: 700; font-size: 15px; margin-top: 15px; 
-      background: rgba(255, 71, 87, 0.1); padding: 10px; border-radius: 8px;
+
+    .result-meta {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+
+    .countdown {
+      color: var(--danger);
+      font-weight: 700;
+      font-size: 15px;
+      margin-top: 15px;
+      background: rgba(255, 71, 87, 0.1);
+      padding: 10px;
+      border-radius: 8px;
     }
 
     .history-header-main {
-      display: flex; justify-content: space-between; align-items: center; 
+      display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 20px; border-bottom: 2px solid #f1f2f6; padding-bottom: 15px;
     }
     .history-header-main h2 { margin: 0; text-align: left; }
 
     .history-item {
       background: #ffffff; padding: 15px; border-radius: 12px; margin-bottom: 15px;
-      border: 1px solid #f1f2f6; border-left: 5px solid var(--primary); 
+      border: 1px solid #f1f2f6; border-left: 5px solid var(--primary);
       display: flex; flex-direction: column; gap: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.02); transition: all 0.3s ease;
     }
     .history-item:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-    .history-item.expired { border-left-color: var(--text-muted); opacity: 0.6; }
-    
-    .history-info { display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
-    .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+    .history-item.expired { border-left-color: var(--text-muted); opacity: 0.7; }
+
+    .history-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      font-weight: 600;
+    }
+
+    .history-name { display: block; }
+    .history-meta { font-size: 13px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+
+    .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; }
     .status-active { background: rgba(46, 204, 113, 0.1); color: var(--success); }
     .status-expired { background: rgba(127, 140, 141, 0.1); color: var(--text-muted); }
 
@@ -132,8 +165,14 @@
 <div class="container">
   <h2>⚙️ Tạo Link Mobileconfig</h2>
   <input id="name" placeholder="Nhập tên khách hàng..." autocomplete="off" />
+  <input id="ttlMinutes" type="number" min="1" step="1" placeholder="Nhập thời gian sống của link (phút)..." autocomplete="off" />
+  <select id="linkType" style="width: 100%; padding: 14px 16px; font-size: 16px; border: 1px solid #e1e5eb; border-radius: 12px; box-sizing: border-box; margin-bottom: 20px; background-color: #f8f9fa; color: #333;">
+    <option value="download">Link 1 - Unlock Locket 15s</option>
+    <option value="download2">Link 2 - DNS Giữ Locket Gold</option>
+  </select>
+  <div class="input-help">Không còn tự động 15 phút nữa. Giờ admin tự nhập thủ công số phút muốn link sống, rồi chọn loại link cần tạo.</div>
   <button id="createBtn" class="btn-primary" onclick="createLink()">Tạo Liên Kết Mới</button>
-  
+
   <div id="result" style="display: none;"></div>
 </div>
 
@@ -142,28 +181,53 @@
     <h2 style="font-size: 18px;">📋 Lịch sử tạo link</h2>
     <button onclick="clearHistory()" class="btn-danger" style="width: auto; padding: 8px 15px; font-size: 13px; border-radius: 8px; box-shadow: none;">Xoá Tất Cả</button>
   </div>
-  <div id="historyList">
-    </div>
+  <div id="historyList"></div>
 </div>
 
 <script>
 let countdownTimer;
 document.addEventListener("DOMContentLoaded", renderHistory);
 
-// Hàm chống lỗi tiếng Việt
 function safeDecodeBase64(str) {
   try { return decodeURIComponent(escape(atob(str))); }
   catch(e) { return atob(str); }
 }
 
+function formatDuration(minutes) {
+  const totalMinutes = Number(minutes) || 0;
+  if (totalMinutes < 60) return totalMinutes + " phút";
+
+  const hours = Math.floor(totalMinutes / 60);
+  const remainMinutes = totalMinutes % 60;
+  if (!remainMinutes) return hours + " giờ";
+  return hours + " giờ " + remainMinutes + " phút";
+}
+
+function formatDateTime(timestamp) {
+  return new Date(timestamp).toLocaleString("vi-VN");
+}
+
 async function createLink() {
   const nameInput = document.getElementById("name");
+  const ttlInput = document.getElementById("ttlMinutes");
+  const linkTypeInput = document.getElementById("linkType");
   const btn = document.getElementById("createBtn");
-  const name = nameInput.value.trim();
-  
-  if (!name) { alert("Vui lòng nhập tên khách hàng!"); return; }
 
-  // Khóa nút bấm và hiện hiệu ứng tải
+  const name = nameInput.value.trim();
+  const ttlMinutes = Number(ttlInput.value);
+  const linkType = linkTypeInput.value;
+
+  if (!name) {
+    alert("Vui lòng nhập tên khách hàng!");
+    return;
+  }
+
+  if (!Number.isFinite(ttlMinutes) || ttlMinutes <= 0) {
+    alert("Vui lòng nhập thời gian sống hợp lệ, lớn hơn 0 phút!");
+    ttlInput.focus();
+    return;
+  }
+
   btn.innerHTML = "⏳ Đang tạo...";
   btn.disabled = true;
 
@@ -171,27 +235,45 @@ async function createLink() {
     const res = await fetch("/api/create", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({ name })
+      body: JSON.stringify({ name, ttlMinutes })
     });
 
-    if (!res.ok) throw new Error("API đang lỗi (" + res.status + "), vui lòng chờ giây lát rồi thử lại.");
+    const rawText = await res.text();
+    let data;
 
-    const data = await res.json();
-    if (!data || !data.data) throw new Error("Không lấy được dữ liệu từ hệ thống.");
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      throw new Error("API trả về dữ liệu không hợp lệ.");
+    }
 
-    // Dùng encodeURIComponent để bảo vệ dấu cộng trong base64
-    const fullLink = location.origin + "/download.html?data=" + encodeURIComponent(data.data);
+    if (!res.ok) {
+      throw new Error(data.error || ("API đang lỗi (" + res.status + ")"));
+    }
 
-    // Dùng safeDecodeBase64 để dịch tiếng Việt chuẩn không bị lỗi Crash
+    if (!data || !data.data) {
+      throw new Error("Không lấy được dữ liệu từ hệ thống.");
+    }
+
+    const routeMap = {
+      download: { path: "/download.html", label: "Link 1 - Unlock Locket 15s" },
+      download2: { path: "/download2.html", label: "Link 2 - DNS Giữ Locket Gold" }
+    };
+    const selectedRoute = routeMap[linkType] || routeMap.download;
+    const fullLink = location.origin + selectedRoute.path + "?data=" + encodeURIComponent(data.data);
     const decodedData = JSON.parse(safeDecodeBase64(data.data));
     const expTime = decodedData.exp;
+    const createdAt = Date.now();
+    const ttlText = formatDuration(decodedData.ttlMinutes || ttlMinutes);
 
     const resultDiv = document.getElementById("result");
     resultDiv.style.display = "block";
     resultDiv.innerHTML = `
-      <div style="text-align: left; margin-bottom: 10px;">
-          <span style="font-size: 14px; color: var(--text-muted);">Link tải dành cho:</span> 
-          <b style="color: var(--text-main); font-size: 16px;">${name}</b>
+      <div class="result-meta">
+        <div><span style="font-size: 14px; color: var(--text-muted);">Khách hàng:</span> <b>${name}</b></div>
+        <div><span style="font-size: 14px; color: var(--text-muted);">Loại link:</span> <b>${selectedRoute.label}</b></div>
+        <div><span style="font-size: 14px; color: var(--text-muted);">Thời gian sống:</span> <b>${ttlText}</b></div>
+        <div><span style="font-size: 14px; color: var(--text-muted);">Hết hạn lúc:</span> <b>${formatDateTime(expTime)}</b></div>
       </div>
       <input value="${fullLink}" id="linkInput" readonly style="margin-bottom: 15px; background: #fff;" />
       <button onclick="copyLink()" class="btn-success">📋 Copy Link Tải</button>
@@ -199,21 +281,22 @@ async function createLink() {
     `;
 
     startCountdown(expTime);
-    saveToHistory(name, fullLink, expTime);
-    nameInput.value = ""; 
+    saveToHistory(name, fullLink, expTime, decodedData.ttlMinutes || ttlMinutes, createdAt, linkType, selectedRoute.label);
+    nameInput.value = "";
+    ttlInput.value = "";
+    linkTypeInput.value = "download";
 
   } catch (err) {
     alert("❌ Lỗi: " + err.message);
   } finally {
-    // Mở khóa nút bấm
     btn.innerHTML = "Tạo Liên Kết Mới";
     btn.disabled = false;
   }
 }
 
-function saveToHistory(name, link, expTime) {
+function saveToHistory(name, link, expTime, ttlMinutes, createdAt, linkType, linkLabel) {
   let history = JSON.parse(localStorage.getItem("linkHistory") || "[]");
-  history.unshift({ name, link, expTime });
+  history.unshift({ name, link, expTime, ttlMinutes, createdAt, linkType, linkLabel });
   localStorage.setItem("linkHistory", JSON.stringify(history));
   renderHistory();
 }
@@ -221,7 +304,7 @@ function saveToHistory(name, link, expTime) {
 function renderHistory() {
   const history = JSON.parse(localStorage.getItem("linkHistory") || "[]");
   const listDiv = document.getElementById("historyList");
-  
+
   if (history.length === 0) {
     listDiv.innerHTML = `
       <div style="text-align: center; padding: 30px 0; color: var(--text-muted);">
@@ -236,11 +319,23 @@ function renderHistory() {
     const isExpired = Date.now() > item.expTime;
     const badgeClass = isExpired ? "status-expired" : "status-active";
     const badgeText = isExpired ? "Đã Hết Hạn" : "Đang Hoạt Động";
-    
+    const ttlText = formatDuration(item.ttlMinutes || 0);
+    const createdText = item.createdAt ? formatDateTime(item.createdAt) : "Không rõ";
+    const expiredText = formatDateTime(item.expTime);
+    const linkLabel = item.linkLabel || (item.linkType === "download2" ? "Link 2 - DNS Giữ Locket Gold" : "Link 1 - Unlock Locket 15s");
+
     listDiv.innerHTML += `
       <div class="history-item ${isExpired ? 'expired' : ''}">
         <div class="history-info">
-          <span>🧑‍💻 ${item.name}</span>
+          <div>
+            <span class="history-name">🧑‍💻 ${item.name}</span>
+            <div class="history-meta">
+              🔗 Loại: ${linkLabel}<br>
+              ⏱️ Sống: ${ttlText}<br>
+              🕒 Tạo: ${createdText}<br>
+              ⌛ Hết hạn: ${expiredText}
+            </div>
+          </div>
           <span class="status-badge ${badgeClass}">${badgeText}</span>
         </div>
         <div class="history-actions">
@@ -266,21 +361,24 @@ function clearHistory() {
   }
 }
 
-function copyText(text) {
-  const tempInput = document.createElement("input");
-  tempInput.value = text;
-  document.body.appendChild(tempInput);
-  tempInput.select();
-  document.execCommand("copy");
-  document.body.removeChild(tempInput);
-  alert("✅ Đã copy link thành công!");
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    alert("✅ Đã copy link thành công!");
+  } catch {
+    const tempInput = document.createElement("input");
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+    alert("✅ Đã copy link thành công!");
+  }
 }
 
 function copyLink() {
   const input = document.getElementById("linkInput");
-  input.select();
-  document.execCommand("copy");
-  alert("✅ Đã copy link thành công!");
+  copyText(input.value);
 }
 
 function startCountdown(expTime) {
@@ -296,15 +394,19 @@ function startCountdown(expTime) {
       display.innerHTML = "❌ Link đã hết hạn!";
       display.style.color = "var(--text-muted)";
       display.style.background = "rgba(127, 140, 141, 0.1)";
-      renderHistory(); 
+      renderHistory();
       return;
     }
 
+    const hours = Math.floor(distance / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    const formatMinutes = minutes < 10 && hours > 0 ? "0" + minutes : minutes;
     const formatSeconds = seconds < 10 ? "0" + seconds : seconds;
 
-    display.innerHTML = `⏳ Tự huỷ sau: ${minutes}:${formatSeconds}`;
+    display.innerHTML = hours > 0
+      ? `⏳ Tự huỷ sau: ${hours}:${formatMinutes}:${formatSeconds}`
+      : `⏳ Tự huỷ sau: ${minutes}:${formatSeconds}`;
   }, 1000);
 }
 </script>
