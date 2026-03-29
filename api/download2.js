@@ -30,7 +30,7 @@ export default function handler(req, res) {
     <key>PayloadDescription</key>
     <string> Chức Năng : 
 ✔️Hỗ Trợ Không Bị Mất Locket Gold
-_Vũ Tuân_
+_CAOVANNAM_
     </string>
     <key>PayloadIdentifier</key>
     <string>io.nextdns.4c9e16.profile</string>
