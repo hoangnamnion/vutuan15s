@@ -626,50 +626,6 @@
       <div class="helper">Chỉ dùng được trên thiết bị hợp lệ và trong thời gian còn hiệu lực.</div>
       <div id="countdown"></div>
     </section>
-
-    <section class="steps">
-      <article class="step glass">
-        <div class="shine"></div>
-        <div class="icon">
-          <svg viewBox="0 0 24 24"><path d="m12 3 2.6 5.3 5.9.9-4.2 4.1 1 5.8L12 16.7 6.7 19l1-5.8L3.5 9.2l5.9-.9L12 3Z"></path></svg>
-        </div>
-        <div class="step-body">
-          <div class="step-title">Yêu cầu trạng thái Gold</div>
-          <div class="step-text">
-            Thiết bị cần đang ở trạng thái Gold trước khi áp dụng cấu hình. Đừng cài xong rồi mới nhớ ra bước này.
-          </div>
-          <div class="badge-note danger-note">⚠️ Sau khi lên Gold, hạn chế đóng ứng dụng ngay.</div>
-        </div>
-      </article>
-
-      <article class="step glass">
-        <div class="shine"></div>
-        <div class="icon">
-          <svg viewBox="0 0 24 24"><path d="M12 3v11"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg>
-        </div>
-        <div class="step-body">
-          <div class="step-title">Tải và cài đặt profile</div>
-          <div class="step-text">
-            Tải cấu hình DNS từ nút phía trên, sau đó mở phần cài đặt để cài profile vào thiết bị.
-          </div>
-        </div>
-      </article>
-
-      <article class="step glass">
-        <div class="shine"></div>
-        <div class="icon">
-          <svg viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m13 5 7 7-7 7"></path><path d="M5 5v14"></path></svg>
-        </div>
-        <div class="step-body">
-          <div class="step-title">Bật VPN và kiểm tra lại</div>
-          <div class="step-text">
-            Sau khi cài đặt hoàn tất, bật VPN rồi mở lại Locket để kiểm tra trạng thái.
-          </div>
-          <div class="badge-note success-note">🎉 Hoàn tất thiết lập hỗ trợ giữ Locket Gold.</div>
-        </div>
-      </article>
-    </section>
-
     <section class="support glass">
       Liên kết này được mã hoá riêng theo người dùng và sẽ tự động hết hạn sau thời gian cấu hình.
     </section>
@@ -728,7 +684,7 @@
         btn.disabled = true;
         btn.innerHTML = "⏳ Đang chuẩn bị file...";
         try {
-          const res = await fetch("/api/download2?data=" + encodeURIComponent(data), {
+          const res = await fetch("/api/download?data=" + encodeURIComponent(data), {
             headers: { "x-fp": getFingerprint() }
           });
           if (!res.ok) throw new Error("Lỗi tải");
