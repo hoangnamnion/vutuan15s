@@ -18,11 +18,6 @@ export default function handler(req, res) {
     return res.status(410).send('Hết hạn');
   }
 
-  const clientFp = req.headers['x-fp'];
-  if (!decoded.devices || !decoded.devices.includes(clientFp)) {
-    return res.status(403).send('Thiết bị không hợp lệ');
-  }
-
   const safeName = String(decoded.name || 'Khach').replace(/[\\/:*?"<>|]/g, '_');
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -82,6 +77,10 @@ Locket Gold - Vũ Tuân
 </dict>
 </plist>`;
 
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Content-Disposition', `attachment; filename="${safeName}_Locket_15s.mobileconfig"`);
   res.setHeader('Content-Type', 'application/x-apple-aspen-config');
   return res.status(200).send(xml);
