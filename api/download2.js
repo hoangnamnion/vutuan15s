@@ -1,3 +1,31 @@
+function escapeXml(value = '') {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function makeAsciiSlug(value = 'Khach') {
+  const normalized = String(value)
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+  const slug = normalized
+    .replace(/[^a-zA-Z0-9._-]+/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_+|_+$/g, '');
+
+  return slug || 'Khach';
+}
+
+function makeContentDisposition(filename) {
+  const fallback = makeAsciiSlug(filename).replace(/\.mobileconfig$/i, '') + '.mobileconfig';
+  const encoded = encodeURIComponent(filename);
+  return `attachment; filename="${fallback}"; filename*=UTF-8''${encoded}`;
+}
+
 export default function handler(req, res) {
   const { data } = req.query || {};
 
@@ -16,25 +44,28 @@ export default function handler(req, res) {
     return res.status(410).send('Hết hạn');
   }
 
+  const rawName = String(decoded.name || 'Khách').trim() || 'Khách';
+  const displayName = escapeXml(rawName);
+  const safeSlug = makeAsciiSlug(rawName);
+
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
     <key>PayloadDisplayName</key>
-    <string>DNS Setting</string>
+    <string>DNS Setting - ${displayName}</string>
     <key>PayloadDescription</key>
-    <string> Chức Năng : 
-✔️Hỗ Trợ Không Bị Mất Locket Gold
-_CAOVANNAM_
-    </string>
+    <string>Chức Năng:
+✔️ Hỗ Trợ Không Bị Mất Locket Gold
+${displayName}</string>
     <key>PayloadIdentifier</key>
-    <string>io.nextdns.4c9e16.profile</string>
+    <string>io.nextdns.4c9e16.profile.${safeSlug}</string>
     <key>PayloadScope</key>
     <string>System</string>
     <key>PayloadType</key>
     <string>Configuration</string>
     <key>PayloadUUID</key>
-    <string>A1E2F262-DB73-40F6-BD22-2E42A43A3C94.4c9e16</string>
+    <string>${safeSlug}-4c9e16-config</string>
     <key>PayloadVersion</key>
     <integer>1</integer>
     <key>PayloadContent</key>
@@ -77,11 +108,11 @@ _CAOVANNAM_
         <key>PayloadType</key>
         <string>com.apple.dnsSettings.managed</string>
         <key>PayloadIdentifier</key>
-        <string>io.nextdns.4c9e16.profile.dnsSettings.managed</string>
+        <string>io.nextdns.4c9e16.profile.dnsSettings.managed.${safeSlug}</string>
         <key>PayloadUUID</key>
-        <string>A1E2F262-DB73-40F6-BD22-2E42A43A3C94.4c9e16.dnsSettings.managed</string>
+        <string>${safeSlug}-4c9e16-dns</string>
         <key>PayloadDisplayName</key>
-        <string>DNS LOCKET GOLD</string>
+        <string>DNS LOCKET GOLD - ${displayName}</string>
         <key>PayloadOrganization</key>
         <string>On</string>
         <key>PayloadVersion</key>
@@ -91,11 +122,12 @@ _CAOVANNAM_
   </dict>
 </plist>`;
 
+  const fileName = `${rawName}_DNS_Locket_Gold.mobileconfig`;
+
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('Content-Disposition', 'attachment; filename="DNS_Locket_Gold.mobileconfig"');
-  res.setHeader('Content-Type', 'application/x-apple-aspen-config');
+  res.setHeader('Content-Disposition', makeContentDisposition(fileName));
+  res.setHeader('Content-Type', 'application/x-apple-aspen-config; charset=utf-8');
   return res.status(200).send(xml);
 }
