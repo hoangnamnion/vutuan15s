@@ -623,7 +623,7 @@
           ⬇️ Tải Profile DNS
         </button>
       </div>
-      <div class="helper">Chỉ dùng được trên thiết bị hợp lệ và trong thời gian còn hiệu lực.</div>
+      <div class="helper">Link sẽ tải trực tiếp bằng Safari khi còn hiệu lực. Nếu đang mở trong app khác, hãy chuyển sang Safari để cài mượt hơn.</div>
       <div id="countdown"></div>
     </section>
     <section class="support glass">
@@ -680,26 +680,17 @@
     function setupDownloadButton() {
       const btn = document.getElementById("downloadBtn");
       btn.style.display = "flex";
-      btn.onclick = async () => {
+      btn.onclick = () => {
         btn.disabled = true;
-        btn.innerHTML = "⏳ Đang chuẩn bị file...";
-        try {
-          const res = await fetch("/api/download?data=" + encodeURIComponent(data), {
-            headers: { "x-fp": getFingerprint() }
-          });
-          if (!res.ok) throw new Error("Lỗi tải");
-          const blob = await res.blob();
-          const url = URL.createObjectURL(blob);
-          window.location.href = url;
-          setTimeout(() => URL.revokeObjectURL(url), 3000);
-          btn.innerHTML = "✅ Đã gửi file tải xuống";
-        } catch (err) {
-          btn.innerHTML = "❌ Tải thất bại, thử lại";
-          setTimeout(() => {
-            btn.disabled = false;
-            btn.innerHTML = "⬇️ Tải Profile DNS";
-          }, 1800);
-        }
+        btn.innerHTML = "⏳ Đang mở file cấu hình...";
+
+        const url = "/api/download?data=" + encodeURIComponent(data);
+        window.location.assign(url);
+
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerHTML = "⬇️ Tải lại Profile DNS";
+        }, 2500);
       };
     }
 
