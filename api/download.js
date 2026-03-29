@@ -88,9 +88,9 @@ export default function handler(req, res) {
     </dict>
   </array>
   <key>PayloadDescription</key>
-  <string>
-Locket Gold - Vũ Tuân 
+  <string> 
 ✔️ Hỗ Trợ Locket Gold Quay Video 15s
+Locket Gold - Vũ Tuân
 </string>
   <key>PayloadDisplayName</key>
   <string>Locket User 15s - ${displayName}</string>
