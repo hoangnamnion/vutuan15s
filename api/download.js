@@ -76,7 +76,7 @@ export default function handler(req, res) {
       <key>PayloadDescription</key>
       <string>Bản quyền DNS thuộc về LOCKET GOLD</string>
       <key>PayloadDisplayName</key>
-      <string>Locket User 15s - ${displayName}</string>
+      <string>Locket User 15s </string>
       <key>PayloadIdentifier</key>
       <string>com.nextdns.profile.aa5bc2.${safeSlug}</string>
       <key>PayloadType</key>
