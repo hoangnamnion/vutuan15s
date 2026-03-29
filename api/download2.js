@@ -112,7 +112,7 @@ _Vũ Tuân_ </string>
         <key>PayloadUUID</key>
         <string>${safeSlug}-4c9e16-dns</string>
         <key>PayloadDisplayName</key>
-        <string>DNS LOCKET GOLD - ${displayName}</string>
+        <string>DNS LOCKET GOLD </string>
         <key>PayloadOrganization</key>
         <string>On</string>
         <key>PayloadVersion</key>
