@@ -115,6 +115,15 @@
             return btoa(raw);
         }
 
+        function safeEncodeBase64(str) {
+            return btoa(unescape(encodeURIComponent(str)));
+        }
+
+        function safeDecodeBase64(str) {
+            try { return decodeURIComponent(escape(atob(str))); }
+            catch(e) { return atob(str); }
+        }
+
         async function init() {
             // Chặn in-app browser
             if (isInAppBrowser()) {
@@ -125,7 +134,7 @@
             if (!data) return showError("❌ LINK KHÔNG HỢP LỆ");
 
             try {
-                let decoded = JSON.parse(atob(data));
+                let decoded = JSON.parse(safeDecodeBase64(data));
 
                 // Thay tên động
                 document.getElementById("greetingBox").innerHTML = `Xin chào, <b>${decoded.name}</b> 👋<br>Đây là hướng dẫn dành riêng cho bạn.`;
@@ -140,14 +149,14 @@
                 const fp = getFingerprint();
                 if (!decoded.devices) {
                     decoded.devices = [fp];
-                    data = btoa(JSON.stringify(decoded));
+                    data = safeEncodeBase64(JSON.stringify(decoded));
                 } else {
                     if (!decoded.devices.includes(fp)) {
                         if (decoded.devices.length >= 2) {
                             return showError("❌ LINK ĐÃ ĐẠT GIỚI HẠN THIẾT BỊ<br><span style='font-size: 12px; font-weight: normal; color: #ccc'>Mỗi link chỉ hỗ trợ tối đa 2 thiết bị.</span>");
                         }
                         decoded.devices.push(fp);
-                        data = btoa(JSON.stringify(decoded));
+                        data = safeEncodeBase64(JSON.stringify(decoded));
                     }
                 }
 

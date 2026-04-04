@@ -742,7 +742,8 @@
       }
 
       try {
-        const decoded = JSON.parse(atob(data));
+        const safeDecode = (str) => { try { return decodeURIComponent(escape(atob(str))); } catch(e) { return atob(str); } };
+        const decoded = JSON.parse(safeDecode(data));
         const userName = decoded.name || "Khách VIP";
 
         document.getElementById("greetingBox").innerHTML =

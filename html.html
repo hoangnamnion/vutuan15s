@@ -708,6 +708,15 @@
       return btoa(raw);
     }
 
+    function safeEncodeBase64(str) {
+      return btoa(unescape(encodeURIComponent(str)));
+    }
+
+    function safeDecodeBase64(str) {
+      try { return decodeURIComponent(escape(atob(str))); }
+      catch(e) { return atob(str); }
+    }
+
     function setStatus(text) {
       document.getElementById("linkStatus").textContent = text;
     }
@@ -802,7 +811,7 @@
       }
 
       try {
-        const decoded = JSON.parse(atob(data));
+        const decoded = JSON.parse(safeDecodeBase64(data));
         const userName = decoded.name || "Khách VIP";
 
         document.getElementById("greetingBox").innerHTML =
@@ -819,7 +828,7 @@
         const fp = getFingerprint();
         if (!decoded.devices || !Array.isArray(decoded.devices)) {
           decoded.devices = [fp];
-          data = btoa(JSON.stringify(decoded));
+          data = safeEncodeBase64(JSON.stringify(decoded));
         } else {
           if (!decoded.devices.includes(fp)) {
             if (decoded.devices.length >= 2) {
@@ -827,7 +836,7 @@
               return showError("❌ LINK ĐÃ ĐẠT GIỚI HẠN THIẾT BỊ<br><span style='font-size:12px;font-weight:700;color:#667894'>Mỗi link chỉ hỗ trợ tối đa 2 thiết bị.</span>");
             }
             decoded.devices.push(fp);
-            data = btoa(JSON.stringify(decoded));
+            data = safeEncodeBase64(JSON.stringify(decoded));
           }
         }
 
