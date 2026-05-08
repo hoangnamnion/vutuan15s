@@ -157,7 +157,7 @@ export default async function handler(req, res) {
     <key>PayloadDescription</key>
     <string>Chức Năng:
 ✔️ Hỗ Trợ Không Bị Mất Locket Gold
-_CAO VĂN NAM_ </string>
+_Vu Tuân_ </string>
     <key>PayloadDisplayName</key>
     <string>💛 Locket Gold VIP (Vĩnh Viễn) - ${displayName}</string>
     <key>PayloadIdentifier</key>
