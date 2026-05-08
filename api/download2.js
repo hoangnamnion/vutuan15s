@@ -1,6 +1,3 @@
-import { getRedis } from './redis.js';
-import { sendTelegramNotification } from './telegram.js';
-
 function escapeXml(value = '') {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -29,55 +26,25 @@ function makeContentDisposition(filename) {
   return `attachment; filename="${fallback}"; filename*=UTF-8''${encoded}`;
 }
 
-export default async function handler(req, res) {
-  const { id } = req.query || {};
+export default function handler(req, res) {
+  const { data } = req.query || {};
 
-  if (!id) {
+  if (!data) {
     return res.status(400).send('Thiếu dữ liệu');
   }
 
-  let data;
+  let decoded;
   try {
-    const redis = await getRedis();
-    const rawData = await redis.get(`link:${id}`);
-    if (rawData) {
-      data = JSON.parse(rawData);
-    }
+    decoded = JSON.parse(Buffer.from(data, 'base64').toString());
   } catch {
-    return res.redirect('/download2.html?error=error');
+    return res.status(400).send('Dữ liệu không hợp lệ');
   }
 
-  if (!data) {
-    return res.redirect('/download2.html?error=used');
+  if (Date.now() > decoded.exp) {
+    return res.status(410).send('Hết hạn');
   }
 
-  if (Date.now() > data.exp) {
-    return res.redirect('/download2.html?error=expired');
-  }
-
-  // Đánh dấu đã sử dụng bằng cách xoá key khỏi database
-  try {
-    const redis = await getRedis();
-    await redis.del(`link:${id}`);
-    
-    // Gửi thông báo Telegram
-    const userAgent = req.headers['user-agent'] || '';
-    
-    // Kiểm tra PC tải trộm
-    const isIOS = /iPhone|iPad|iPod/i.test(userAgent) || (/CFNetwork/.test(userAgent) && /Darwin/.test(userAgent));
-    if (!isIOS) {
-      await sendTelegramNotification(data.name || 'Khách hàng', userAgent, 'Link 2 - DNS Giữ Locket Gold', true);
-      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-      res.setHeader('Content-Disposition', 'attachment; filename="CanhBao.txt"');
-      return res.status(200).send("đưa tiền đây tau đưa file gốc cho ăn cắp làm j cho khổ");
-    }
-
-    await sendTelegramNotification(data.name || 'Khách hàng', userAgent, 'Link 2 - DNS Giữ Locket Gold');
-  } catch (e) {
-    console.error("Failed to delete key", e);
-  }
-
-  const rawName = String(data.name || 'Khách').trim() || 'Khách';
+  const rawName = String(decoded.name || 'Khách').trim() || 'Khách';
   const displayName = escapeXml(rawName);
   const safeSlug = makeAsciiSlug(rawName);
 
