@@ -124,13 +124,13 @@ export default function handler(req, res) {
     <key>PayloadDescription</key>
     <string>Chức Năng:
 ✔️ Hỗ Trợ Không Bị Mất Locket Gold
-_Vu Tuân_ </string>
+_Vũ Tuân_ </string>
     <key>PayloadDisplayName</key>
     <string>💛 Locket Gold VIP (Vĩnh Viễn) - ${displayName}</string>
     <key>PayloadIdentifier</key>
     <string>com.p12.locket.vip</string>
     <key>PayloadOrganization</key>
-    <string>By CAO VĂN NAM</string>
+    <string>By Vũ Tuân</string>
     <key>PayloadRemovalDisallowed</key>
     <false/>
     <key>PayloadType</key>
